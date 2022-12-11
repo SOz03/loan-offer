@@ -1,43 +1,32 @@
-import {Component} from '@angular/core';
-import {environment} from '../enviroments/environment';
-import {TokenStorageService} from './service/token/token-storage.service';
+import { Component } from '@angular/core';
+import { AuthService } from './services';
+import { Router } from '@angular/router';
+import { User } from './models';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
-  private role: string = '';
+  title = 'template-page';
 
-  authenticated = false;
-  editAccess = false;
-  login?: string;
+  user: User | null = null;
 
-  constructor(private tokenStorageService: TokenStorageService) {
-
+  constructor(private authService: AuthService, private router: Router) {
+    this.user = this.authService.user;
   }
 
-  ngOnInit(): void {
-    this.authenticated = !!this.tokenStorageService.getToken();
-
-    if (this.authenticated) {
-      const user = this.tokenStorageService.getUser();
-      this.role = user.role;
-      this.login = user.login;
-
-      this.editAccess = this.role == 'ADMIN';
-    }
+  get isAuthenticated(): boolean {
+    return this.authService.isLoggedIn;
   }
 
-  logout(): void {
-    this.tokenStorageService.signOut();
-
-    if (environment.production) {
-      window.location.href = "/bank"
-    } else {
-      window.location.reload();
-    }
+  get hasEditAccess(): boolean {
+    return this.authService.hasEditAccess;
   }
 
+  logout() {
+    this.authService.logout();
+    this.router.navigate(['login']);
+  }
 }

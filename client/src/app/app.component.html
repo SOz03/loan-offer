@@ -3,17 +3,14 @@
     <a href="#" class="navbar-brand">SSAU</a>
     <ul class="navbar-nav mr-auto" routerLinkActive="active">
       <li class="nav-item">
-        <a href="/home" class="nav-link" routerLink="home">Home </a>
+        <a href="/banks" class="nav-link" routerLink="banks">Home </a>
       </li>
-      <li class="nav-item" *ngIf="editAccess">
+      <li class="nav-item" *ngIf="hasEditAccess">
         <a href="/editor" class="nav-link" routerLink="editor">Book Editor</a>
-      </li>
-      <li class="nav-item">
-        <a href="/shelf" class="nav-link" *ngIf="authenticated" routerLink="shelf">Shelf</a>
       </li>
     </ul>
 
-    <ul class="navbar-nav ml-auto" *ngIf="!authenticated">
+    <ul class="navbar-nav ml-auto" *ngIf="!isAuthenticated">
       <li class="nav-item">
         <a href="/register" class="nav-link" routerLink="register">Registration</a>
       </li>
@@ -22,9 +19,9 @@
       </li>
     </ul>
 
-    <ul class="navbar-nav ml-auto" *ngIf="authenticated">
+    <ul class="navbar-nav ml-auto" *ngIf="isAuthenticated">
       <li class="nav-item">
-        <a href="/profile" class="nav-link" routerLink="profile">{{ login }}</a>
+        <a href="/profile" class="nav-link" routerLink="profile">{{ user?.username }}</a>
       </li>
       <li class="nav-item">
         <a href class="nav-link" (click)="logout()">Logout</a>

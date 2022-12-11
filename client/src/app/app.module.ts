@@ -1,25 +1,34 @@
-import {NgModule} from '@angular/core';
-import {BrowserModule} from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
 
-import {AppComponent} from './app.component';
-import {FormsModule} from "@angular/forms";
-import {routing} from "./app-routing.module";
-import {HttpClientModule} from "@angular/common/http";
-import {LoginComponent} from "./login/login.component";
+import { AppComponent } from './app.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AppRoutingModule } from './app-routing.module';
+import { HttpClientModule } from '@angular/common/http';
+import {
+  BankFormPage,
+  BankListPage,
+  LoginPage,
+  ProfilePage,
+  RegistrationPage,
+} from './pages';
 
 @NgModule({
   imports: [
     BrowserModule,
     FormsModule,
+    ReactiveFormsModule,
     HttpClientModule,
-    routing
+    AppRoutingModule,
   ],
   declarations: [
     AppComponent,
-    LoginComponent
+    RegistrationPage,
+    LoginPage,
+    ProfilePage,
+    BankFormPage,
+    BankListPage,
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-
-export class AppModule {
-}
+export class AppModule {}
