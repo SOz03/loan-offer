@@ -1,1 +1,0 @@
-{"ast":null,"code":"import { RouterModule } from \"@angular/router\";\nimport { LoginComponent } from \"./login/login.component\";\nconst appRoutes = [{\n  path: '/auth/login',\n  component: LoginComponent\n}, {\n  path: '**',\n  redirectTo: ''\n}];\nexport const routing = RouterModule.forRoot(appRoutes);","map":null,"metadata":{},"sourceType":"module","externalDependencies":[]}
