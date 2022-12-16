@@ -2,6 +2,7 @@ package ru.ssau.loanofferservice.dto.enums;
 
 import ru.ssau.loanofferservice.controller.AuthenticationController;
 import ru.ssau.loanofferservice.controller.BankController;
+import ru.ssau.loanofferservice.controller.CreditController;
 
 public class ApiPaths {
 
@@ -15,9 +16,15 @@ public class ApiPaths {
     /**
      * {@link BankController}
      */
-    public static final String API_BANK = "/bank";
+    public static final String API_BANKS = "/banks";
+
+    /**
+     * {@link CreditController}
+     */
+    public static final String API_CREDITS = "/credits";
 
     public static final String[] AUTH_WHITELIST = {
-            API_AUTHENTICATION + "/**"
+            API_AUTHENTICATION + "/*",
+            "/home"
     };
 }

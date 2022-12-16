@@ -38,7 +38,7 @@ public class UserService {
 
     @Transactional(propagation = Propagation.REQUIRED)
     public UserDto findByUsernameOrMail(UserDto userDto) {
-        log.debug("Find user by username={} or mail={}", userDto.getUsername(), userDto.getEmail());
+        log.debug("Find user by username={} or email={}", userDto.getUsername(), userDto.getEmail());
         User user = userDaoService.findByUsernameOrEmail(userDto.getUsername(), userDto.getEmail());
         return (user == null) ? null : modelMapper.map(user, UserDto.class);
     }

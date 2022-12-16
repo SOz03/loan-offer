@@ -1,7 +1,9 @@
 package ru.ssau.loanofferservice.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import ru.ssau.loanofferservice.dto.enums.Role;
 
 import java.io.Serial;
@@ -24,9 +26,26 @@ public class LoginDto implements Serializable {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private String token;
 
-    public LoginDto(String username, Role role, String token) {
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private String fullname;
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private String email;
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private String phone;
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private String city;
+
+    public LoginDto(String username, Role role, String email, String fullname,
+                    String phone, String city, String token) {
         this.username = username;
         this.role = role;
+        this.email = email;
+        this.fullname = fullname;
+        this.phone = phone;
+        this.city = city;
         this.token = token;
     }
 

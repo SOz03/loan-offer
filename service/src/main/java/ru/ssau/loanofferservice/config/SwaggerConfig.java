@@ -28,7 +28,7 @@ public class SwaggerConfig implements WebMvcConfigurer {
                         .addSecuritySchemes("my security",
                                 new SecurityScheme().name("my security")
                                         .type(SecurityScheme.Type.HTTP)
-                                        .scheme("bearer"))
+                                        .scheme("Bearer "))
                 );
     }
 

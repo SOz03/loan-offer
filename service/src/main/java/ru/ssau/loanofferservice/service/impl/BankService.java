@@ -48,15 +48,13 @@ public class BankService implements ApiService<BankDto> {
         this.self = bankService;
     }
 
-    public ApiResponse filter(String name, UserDetailsImpl principal) {
+    public List<BankDto> filter(String name, UserDetailsImpl principal) {
         log.info("Search for all bank entities by name={}", name);
         List<Bank> entities = bankDaoService.getAllByName(name);
 
         if (entities.isEmpty()) {
             log.info("The result is empty");
-            return ApiResponse.builder()
-                    .content(new ArrayList<>())
-                    .build();
+            return new ArrayList<>();
         }
 
         entities = zeroUsersForTheUserRole(entities, principal);
@@ -66,14 +64,11 @@ public class BankService implements ApiService<BankDto> {
                 .collect(Collectors.toList());
 
         log.debug("The resulting number={} entities by name={}", content.size(), name);
-        return ApiResponse.builder()
-                .content(content)
-                .totalElements(content.size())
-                .build();
+        return content;
     }
 
     @Override
-    public ApiResponse select(UserDetailsImpl principal) {
+    public List<BankDto> select(UserDetailsImpl principal) {
         log.info("Search for all bank entities");
         List<Bank> entities = (List<Bank>) bankDaoService.findAll();
 
@@ -84,10 +79,7 @@ public class BankService implements ApiService<BankDto> {
                 .collect(Collectors.toList());
 
         log.info("Converted entities to dto, the result is {}", gson.toJson(content));
-        return ApiResponse.builder()
-                .content(content)
-                .totalElements(content.size())
-                .build();
+        return content;
     }
 
     @Override

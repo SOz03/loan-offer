@@ -10,7 +10,6 @@ import ru.ssau.loanofferservice.common.dao.entity.BaseEntity;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.math.BigDecimal;
-import java.time.LocalDate;
 
 @Getter
 @Setter

@@ -1,78 +1,60 @@
 package ru.ssau.loanofferservice.controller;
 
-import com.google.gson.Gson;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.ResponseEntity;
-import org.springframework.lang.Nullable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-import ru.ssau.loanofferservice.dto.BankDto;
-import ru.ssau.loanofferservice.dto.response.ApiResponse;
+import ru.ssau.loanofferservice.dto.CreditDto;
 import ru.ssau.loanofferservice.security.config.principal.UserDetailsImpl;
-import ru.ssau.loanofferservice.service.impl.BankService;
+import ru.ssau.loanofferservice.service.impl.CreditService;
 
-import java.util.List;
 import java.util.UUID;
 
-import static ru.ssau.loanofferservice.dto.enums.ApiPaths.API_BANKS;
+import static ru.ssau.loanofferservice.dto.enums.ApiPaths.API_CREDITS;
 
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@Tag(name = "–ò–Ω—Ñ–æ—Ä–º–∞—Ü–∏—è –æ –±–∞–Ω–∫–∞—Ö")
-@RequestMapping(path = API_BANKS)
+@Tag(name = "»ÌÙÓÏ‡ˆËˇ Ó ÍÂ‰ËÚ‡ı")
+@RequestMapping(path = API_CREDITS)
+@CrossOrigin
 @PreAuthorize("authentication.isAuthenticated()")
-public class BankController {
+public class CreditController {
 
-    private final BankService bankService;
+    private final CreditService creditService;
 
     @GetMapping
     public ResponseEntity<?> select(Authentication authentication) {
         UserDetailsImpl principal = (UserDetailsImpl) authentication.getPrincipal();
-        log.info("Request for filter banks accepted");
-        List<BankDto> response = bankService.select(principal);
-        return ResponseEntity.ok().body(response);
+        log.info("Request for select credits accepted");
+        return ResponseEntity.ok().body(creditService.select(principal));
     }
 
     @GetMapping(path = "/{id}")
     public ResponseEntity<?> get(@PathVariable UUID id, Authentication authentication) {
         UserDetailsImpl principal = (UserDetailsImpl) authentication.getPrincipal();
-        log.info("Request for get bank accepted");
-
-        ApiResponse content = bankService.get(id);
-
-        return ResponseEntity.ok()
-                .body(content);
+        log.info("Request for get credit accepted");
+        return ResponseEntity.ok().body(creditService.get(id));
     }
 
     @PostMapping
     @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<?> create(@RequestBody BankDto dto,
-                                    Authentication authentication) {
+    public ResponseEntity<?> create(@RequestBody CreditDto dto, Authentication authentication) {
         UserDetailsImpl principal = (UserDetailsImpl) authentication.getPrincipal();
-        log.info("Request for create bank accepted");
-
-        ApiResponse content = bankService.create(dto, principal);
-
-        return ResponseEntity.ok()
-                .body(content);
+        log.info("Request for create credit accepted");
+        return ResponseEntity.ok().body(creditService.create(dto, principal));
     }
 
     @PutMapping
     @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<?> update(UUID updatedEntityId, @RequestBody BankDto updateDto,
+    public ResponseEntity<?> update(UUID updatedEntityId, @RequestBody CreditDto updateDto,
                                     Authentication authentication) {
         UserDetailsImpl principal = (UserDetailsImpl) authentication.getPrincipal();
-        log.info("Request for update bank accepted");
-
-        ApiResponse content = bankService.update(updatedEntityId, updateDto, principal);
-
-        return ResponseEntity.ok()
-                .body(content);
+        log.info("Request for update credit accepted");
+        return ResponseEntity.ok().body(creditService.update(updatedEntityId, updateDto, principal));
     }
 
     @DeleteMapping(path = "/{id}")
@@ -80,11 +62,8 @@ public class BankController {
     public ResponseEntity<?> delete(@PathVariable UUID id,
                                     Authentication authentication) {
         UserDetailsImpl principal = (UserDetailsImpl) authentication.getPrincipal();
-        log.info("Request for delete bank accepted");
-
-        bankService.delete(id, principal.getId());
-
+        log.info("Request for delete credit accepted");
+        creditService.delete(id, principal.getId());
         return ResponseEntity.ok().build();
     }
-
 }

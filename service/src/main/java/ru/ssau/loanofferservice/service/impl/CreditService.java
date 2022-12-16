@@ -16,6 +16,7 @@ import ru.ssau.loanofferservice.security.config.principal.UserDetailsImpl;
 
 import java.time.Clock;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -28,20 +29,21 @@ public class CreditService implements ApiService<CreditDto> {
     private final ModelMapper mapper;
     private final CreditDaoService daoService;
 
-    @Override
     @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
-    public ApiResponse select(UserDetailsImpl principal) {
+    public List<CreditDto> select(UserDetailsImpl principal) {
         List<Credit> credits = (List<Credit>) daoService.findAll();
+
+        if (credits.isEmpty()) {
+            log.info("The result is empty");
+            return new ArrayList<>();
+        }
 
         List<CreditDto> result = credits.stream()
                 .map(entity -> mapper.map(entity, CreditDto.class))
                 .toList();
 
-        log.debug("Select result = {}", gson.toJson(result));
-        return ApiResponse.builder()
-                .content(result)
-                .totalElements(result.size())
-                .build();
+        log.info("Select result = {}", gson.toJson(result));
+        return result;
     }
 
     @Override
@@ -111,7 +113,7 @@ public class CreditService implements ApiService<CreditDto> {
             entity.setDeletedBy(userId);
             daoService.save(entity);
 
-            log.debug("Deleted is completed by id {}, deleted by user {}", uuid, userId);
+            log.info("Deleted is completed by id {}, deleted by user {}", uuid, userId);
         }
     }
 }

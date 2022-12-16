@@ -14,7 +14,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Builder
 @NoArgsConstructor
@@ -25,7 +24,11 @@ public class UserDetailsImpl implements UserDetails {
     private UUID id;
     private String username;
     private String password;
-    private String mail;
+
+    private String email;
+    private String fullname;
+    private String phone;
+    private String city;
     private List<? extends GrantedAuthority> roles;
 
     @Override
@@ -38,7 +41,10 @@ public class UserDetailsImpl implements UserDetails {
                 .id(user.getId())
                 .username(user.getUsername())
                 .password(user.getEncryptPassword())
-                .mail(user.getEmail())
+                .email(user.getEmail())
+                .city(user.getCity())
+                .phone(user.getPhone())
+                .fullname(user.getFullname())
                 .roles(mapToGrantedAuthorities(user.getRole()))
                 .build();
     }
@@ -63,6 +69,22 @@ public class UserDetailsImpl implements UserDetails {
     @Override
     public String getUsername() {
         return username;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getFullname() {
+        return fullname;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public String getCity() {
+        return city;
     }
 
     @Override

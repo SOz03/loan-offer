@@ -9,15 +9,15 @@ import { API_SERVICES } from 'src/app/constants';
 export class UserService {
   constructor(private http: HttpClient) { }
 
-  getPublicContent(): Observable<any> {
-    return this.http.get(`${API_SERVICES.bank}/public`, { responseType: 'text' });
-  }
-
-  getRegistered(): Observable<any> {
-    return this.http.get(`${API_SERVICES.bank}/registered`, { responseType: 'text' });
-  }
-
-  getPrivate(): Observable<any> {
-    return this.http.get(`${API_SERVICES.bank}/private`, { responseType: 'text' });
-  }
+  // getPublicContent(): Observable<any> {
+  //   return this.http.get(`${API_SERVICES.bank}/public`, { responseType: 'text' });
+  // }
+  //
+  // getRegistered(): Observable<any> {
+  //   return this.http.get(`${API_SERVICES.bank}/registered`, { responseType: 'text' });
+  // }
+  //
+  // getPrivate(): Observable<any> {
+  //   return this.http.get(`${API_SERVICES.bank}/private`, { responseType: 'text' });
+  // }
 }

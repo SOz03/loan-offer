@@ -21,12 +21,12 @@ export class LoginComponent implements OnInit {
     this.form = new FormGroup({
       username: new FormControl('', [
         Validators.required,
-        // Validators.minLength(5),
+        Validators.minLength(4),
         Validators.maxLength(20),
       ]),
       password: new FormControl('', [
         Validators.required,
-        // Validators.minLength(6),
+        Validators.minLength(4),
       ]),
     });
   }
@@ -43,11 +43,11 @@ export class LoginComponent implements OnInit {
     this.authService.login({ username, password }).subscribe({
       next: (data) => {
         if (
-          data.statusCode === 'OK' &&
+          data.statusCode === 'OK' /*&&
           data.body.content &&
-          data.body.content[0]
+          data.body.content[0]*/
         ) {
-          const user = data.body.content[0];
+          const user = data.body/*.content[0]*/;
 
           this.storageService.saveToken(user.token);
           this.storageService.saveUser(user);
@@ -56,7 +56,7 @@ export class LoginComponent implements OnInit {
       },
       complete: () => {
         this.isLoginFailed = false;
-        this.router.navigate(['banks']);
+        this.reloadPage();
       },
       error: (err) => {
         this.errorMessage = err.message || '';

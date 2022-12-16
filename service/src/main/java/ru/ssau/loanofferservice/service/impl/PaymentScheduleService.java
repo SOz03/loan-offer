@@ -68,7 +68,7 @@ public class PaymentScheduleService implements ApiService<PaymentScheduleDto> {
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
-    public ApiResponse select(UserDetailsImpl principal) {
+    public List<PaymentScheduleDto> select(UserDetailsImpl principal) {
         boolean isUser = principal.getAuthorities().stream()
                 .filter(role -> role.getAuthority().equals(Role.USER.name()))
                 .count() == 1;
@@ -83,7 +83,7 @@ public class PaymentScheduleService implements ApiService<PaymentScheduleDto> {
 
         if (loanOfferList.isEmpty()) {
             log.debug("The result is empty");
-            return ApiResponse.builder().build();
+            return new ArrayList<>();
         }
 
         List<PaymentScheduleDto> content = new ArrayList<>();
@@ -96,10 +96,7 @@ public class PaymentScheduleService implements ApiService<PaymentScheduleDto> {
         }
 
         log.debug("Converted entities to dto, the result is {}", gson.toJson(content));
-        return ApiResponse.builder()
-                .content(content)
-                .totalElements(content.size())
-                .build();
+        return content;
     }
 
     @Override

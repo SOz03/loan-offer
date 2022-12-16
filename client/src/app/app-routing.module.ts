@@ -8,6 +8,8 @@ import {
   BankFormPage,
   BankListPage,
   ProfilePage,
+  CreditListPage,
+  HomePage
 } from './pages';
 
 const appRoutes: Routes = [
@@ -32,13 +34,22 @@ const appRoutes: Routes = [
     canActivate: [AuthGuard],
   },
   {
+    path: 'credits',
+    component: CreditListPage,
+    canActivate: [AuthGuard],
+  },
+  {
     path: 'profile',
     component: ProfilePage,
     canActivate: [AuthGuard],
   },
   {
-    path: '*',
-    redirectTo: 'banks',
+    path: 'home',
+    component: HomePage,
+  },
+  {
+    path: '#',
+    redirectTo: 'home',
   },
 ];
 

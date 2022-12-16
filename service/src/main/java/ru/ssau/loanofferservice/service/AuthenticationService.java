@@ -42,7 +42,13 @@ public class AuthenticationService implements Response {
 
         return ResponseEntity.ok()
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(singleResponse(new LoginDto(principal.getUsername(), role, jwt)));
+                .body(new LoginDto(principal.getUsername(),
+                        role,
+                        principal.getEmail(),
+                        principal.getFullname(),
+                        principal.getPhone(),
+                        principal.getCity(),
+                        jwt));
     }
 
     @Transactional
@@ -60,6 +66,7 @@ public class AuthenticationService implements Response {
             return ResponseEntity.ok().body(errorResponse(Errors.INVALID_LOGIN_OR_EMAIL.name()));
         }
         newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
+//        newUser.setPassword(newUser.getPassword());
         UserDto userDto = userService.create(newUser);
 
         return ResponseEntity.ok().body(singleResponse(userDto));

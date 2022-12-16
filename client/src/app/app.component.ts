@@ -21,12 +21,14 @@ export class AppComponent {
     return this.authService.isLoggedIn;
   }
 
-  get hasEditAccess(): boolean {
-    return this.authService.hasEditAccess;
-  }
+  // get hasEditAccess(): boolean {
+  //   return this.authService.hasEditAccess;
+  // }
 
   logout() {
+    // console.log(event);
+    // event.preventDefault();
     this.authService.logout();
-    this.router.navigate(['login']);
+    this.router.navigate(['/login']);
   }
 }

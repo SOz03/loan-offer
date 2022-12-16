@@ -4,7 +4,6 @@ import { Observable } from 'rxjs';
 import { API_SERVICES } from 'src/app/constants';
 import { Bank } from 'src/app/models';
 
-//window["apiUrl"]
 @Injectable({
   providedIn: 'root',
 })

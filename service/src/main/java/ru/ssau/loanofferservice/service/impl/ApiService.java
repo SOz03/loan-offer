@@ -11,7 +11,7 @@ import java.util.UUID;
 
 public interface ApiService<D> extends Response {
 
-    ApiResponse select(UserDetailsImpl principal);
+    List<D> select(UserDetailsImpl principal);
 
     ApiResponse get(UUID uuid);
 
