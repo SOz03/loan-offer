@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {Credit} from '../../models';
 import {AuthService, CreditService} from '../../services';
 import {CreditFilter} from "../index";
-
 @Component({
   selector: 'app-credit-list',
   templateUrl: './credit-list.component.html',
@@ -19,6 +18,7 @@ export class CreditListComponent implements OnInit {
   ngOnInit() {
     this.creditService.getAll().subscribe((data: Credit[]) => {
       this.credits = data;
+      this.credits.forEach(el => el.show = true)
     });
   }
 
@@ -41,6 +41,12 @@ export class CreditListComponent implements OnInit {
         });
       }
     });
+  }
+
+  search(val: string) {
+    this.credits?.forEach(el => {
+      el.show = el.limitation.toString().indexOf(val) == -1 ? el.show = false : true
+    })
   }
 
 }

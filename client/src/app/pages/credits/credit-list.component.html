@@ -4,7 +4,7 @@
 <div class="container-fluid">
   <div class="text-center form-control-sm">
     <label><strong>Лимит</strong></label>
-    <input [(ngModel)]="searchText" type="search" placeholder="поиск"
+    <input [(ngModel)]="searchText" (input)="search(searchText)" type="search" placeholder="поиск"
            style="margin: 10px auto; width: 50%;">
   </div>
   <label>Всего: <strong>{{credits?.length}}</strong></label>
@@ -23,7 +23,7 @@
     </tr>
     </thead>
     <tbody>
-    <tr class="text-center" *ngFor="let credit of credits">
+    <tr class="text-center {{(credit.show ? '' : 'd-none')}}" *ngFor="let credit of credits">
       <td>{{credit.id}}</td>
       <td>{{credit.limitation}}</td>
       <td>{{credit.rate}}</td>
@@ -44,7 +44,7 @@
     </tr>
     </tbody>
   </table>
-</div>
+  </div>
 
 
 
