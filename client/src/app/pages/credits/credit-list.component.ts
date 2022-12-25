@@ -1,7 +1,8 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, ComponentFactoryResolver, OnInit, ViewChild} from '@angular/core';
 import {Credit} from '../../models';
 import {AuthService, CreditService} from '../../services';
-import {CreditFilter} from "../index";
+import {CreditFilter, ModalWindow} from "../index";
+import { RefDirecive } from './red.directive';
 @Component({
   selector: 'app-credit-list',
   templateUrl: './credit-list.component.html',
@@ -12,7 +13,10 @@ export class CreditListComponent implements OnInit {
   searchText: string = '';
   // creditFilter = new CreditFilter();
 
-  constructor(private creditService: CreditService, private authService: AuthService) {
+  @ViewChild(RefDirecive, { static: false })
+  refDir!: RefDirecive;
+
+  constructor(private creditService: CreditService, private authService: AuthService, private resolver: ComponentFactoryResolver) {
   }
 
   ngOnInit() {
@@ -46,6 +50,30 @@ export class CreditListComponent implements OnInit {
   search(val: string) {
     this.credits?.forEach(el => {
       el.show = el.limitation.toString().indexOf(val) == -1 ? el.show = false : true
+    })
+  }
+
+  edit(credit: Credit) {
+    const modalFactory = this.resolver.resolveComponentFactory(ModalWindow)
+    this.refDir.containerRef.clear()
+
+    const component = this.refDir.containerRef.createComponent(modalFactory)
+    component.instance.header = 'Изменить кредит'
+    component.instance.credit = credit
+    component.instance.close.subscribe(() => {
+      this.refDir.containerRef.clear()
+    })
+  }
+
+  addCredit() {
+    const modalFactory = this.resolver.resolveComponentFactory(ModalWindow)
+    this.refDir.containerRef.clear()
+
+    const component = this.refDir.containerRef.createComponent(modalFactory)
+    component.instance.header = 'Добавить кредит'
+    component.instance.credit = new Credit
+    component.instance.close.subscribe(() => {
+      this.refDir.containerRef.clear()
     })
   }
 

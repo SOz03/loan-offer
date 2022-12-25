@@ -9,12 +9,14 @@ import {
   BankFormPage,
   BankListPage,
   CreditFilter,
+  ModalWindow,
   CreditListPage,
   HomePage,
   LoginPage,
   ProfilePage,
   RegistrationPage,
 } from './pages';
+import { RefDirecive } from './pages/credits/ref.directive';
 
 @NgModule({
   imports: [
@@ -33,7 +35,9 @@ import {
     BankListPage,
     CreditListPage,
     CreditFilter,
+    ModalWindow,
     HomePage,
+    RefDirecive,
   ],
   bootstrap: [AppComponent],
 })

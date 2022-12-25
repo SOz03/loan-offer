@@ -16,9 +16,9 @@
       <th>Процентная ставка</th>
       <th>Максимальный срок(мес.)</th>
       <th>
-        <button *ngIf="hasEditAccess" type="button" class="btn btn-primary" data-bs-toggle="modal"
-                data-bs-target="#exampleModal" data-bs-whatever="@mdo">Добавить запись
-        </button>
+        <div *ngIf="hasEditAccess" class="btn btn-primary" data-bs-toggle="modal"
+                data-bs-target="#exampleModal" data-bs-whatever="@mdo" (click)="addCredit()">Добавить запись
+        </div>
       </th>
     </tr>
     </thead>
@@ -29,12 +29,12 @@
       <td>{{credit.rate}}</td>
       <td>{{credit.deadline}}</td>
       <td>
-        <button *ngIf="hasEditAccess" class="btn btn-warning" style="margin-right: 5px;"
-                [routerLink]="['/edit-credit',credit.id]">
+        <div *ngIf="hasEditAccess" class="btn btn-warning" style="margin-right: 5px;"
+                [routerLink]="['/edit-credit',credit.id]" (click)="edit(credit)">
           <img id="profile-img-edit" style="width: 20px; height: 20px;"
                src="https://cdn.icon-icons.com/icons2/2368/PNG/512/notes_edit_modify_icon_143729.png"
                class="profile-img-card" alt=""/>
-        </button>
+        </div>
         <button *ngIf="hasEditAccess" class="btn btn-danger" (click)="delete(credit.id)">
           <img id="profile-img-delete" style="width: 20px; height: 20px;"
                src="https://cdn.icon-icons.com/icons2/692/PNG/512/seo-social-web-network-internet_262_icon-icons.com_61518.png"
@@ -45,6 +45,7 @@
     </tbody>
   </table>
   </div>
+<ng-template appRef></ng-template>
 
 
 

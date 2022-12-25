@@ -1,0 +1,47 @@
+<div class="modalWindow">
+  <div class="contentModal" ref="contentModal">
+    <div class="contentModal__back">
+      <div class="contentModal__position">
+        <div click="handleBackgroundClose">
+          <div
+            class="contentModal__body"
+            role="dialog"
+            aria-modal="true"
+            tabindex="-1"
+            ref="dialogBody"
+            keydown="focusTrap"
+          >
+            <div
+              class="contentModal__close"
+              (click)="close.emit()"
+              v-if="!notClosable"
+            ></div>
+
+            <div class="modalH3">{{ header }}</div>
+            <div class="cart__modal-content">
+                <div class="row" *ngIf="credit.id">
+                  <div class="col-4">Id</div>
+                  <div class="col-8"><div class="mb-5-px p-0-15-px">{{ credit.id }}</div></div>
+                </div>
+                <div class="row">
+                  <div class="col-4">Лимит по кредиту</div>
+                  <div class="col-8"><input type="text" name="limitation" [value]="credit.limitation" class="inputText"/></div>
+                </div>
+                <div class="row">
+                  <div class="col-4">Процентная ставка</div>
+                  <div class="col-8"><input type="text" name="rate" [value]="credit.rate" class="inputText"/></div>
+                </div>
+                <div class="row">
+                  <div class="col-4">Процентная ставка</div>
+                  <div class="col-8"><input type="text" name="deadline" [value]="credit.deadline" class="inputText"/></div>
+                </div>
+                <div class="row">
+                  <input class="btn btn-primary inputBtn" type="submit" (click)="save.emit()"/>
+                </div>
+              </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

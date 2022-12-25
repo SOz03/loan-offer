@@ -6,6 +6,7 @@ export {BankFormComponent as BankFormPage} from './banks/bank-form/bank-form.com
 export {BankListComponent as BankListPage} from './banks/bank-list/bank-list.component';
 
 export {CreditListComponent as CreditListPage} from './credits/credit-list.component'
+export {ModalWindow as ModalWindow} from './credits/modal-window.component'
 export {CreditFilterPipe as CreditFilter} from './credits/credit-filter-pipe.pipe'
 
 export {HomeComponent as HomePage} from './home/home.component'
