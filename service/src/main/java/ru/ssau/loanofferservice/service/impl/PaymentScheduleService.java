@@ -35,37 +35,6 @@ public class PaymentScheduleService implements ApiService<PaymentScheduleDto> {
     private final PaymentScheduleDaoService daoService;
     private final LoanOfferDaoService loanOfferDaoService;
 
-    @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
-    public ApiResponse filter(LoanOfferDto dto, UserDetailsImpl principal) {
-
-        if (dto == null) {
-            log.debug("Param is null");
-            return errorResponse(Errors.PARAM_IS_EMPTY.name());
-        }
-
-        LoanOffer loanOffer = loanOfferDaoService.findByLoanOfferDto(dto, principal);
-        if (loanOffer == null) {
-            return ApiResponse.builder().build();
-        }
-
-        List<PaymentSchedule> entities = daoService.getAllByLoanOffer(loanOffer);
-        if (entities.isEmpty()) {
-            log.debug("The result is empty");
-            return ApiResponse.builder().build();
-        }
-
-        List<PaymentScheduleDto> content = entities.stream()
-                .map(entity -> mapper.map(entity, PaymentScheduleDto.class))
-                .collect(Collectors.toList());
-
-        log.debug("The resulting number={} entities by dto={}", content.size(),
-                gson.toJson(dto));
-        return ApiResponse.builder()
-                .content(content)
-                .totalElements(content.size())
-                .build();
-    }
-
     @Override
     @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
     public List<PaymentScheduleDto> select(UserDetailsImpl principal) {
@@ -178,5 +147,36 @@ public class PaymentScheduleService implements ApiService<PaymentScheduleDto> {
             log.debug("Deleted is completed by id {}, deleted by user {}", id, userId);
         }
     }
+
+    //    @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
+//    public ApiResponse filter(LoanOfferDto dto, UserDetailsImpl principal) {
+//
+//        if (dto == null) {
+//            log.debug("Param is null");
+//            return errorResponse(Errors.PARAM_IS_EMPTY.name());
+//        }
+//
+//        LoanOffer loanOffer = loanOfferDaoService.findByLoanOfferDto(dto, principal);
+//        if (loanOffer == null) {
+//            return ApiResponse.builder().build();
+//        }
+//
+//        List<PaymentSchedule> entities = daoService.getAllByLoanOffer(loanOffer);
+//        if (entities.isEmpty()) {
+//            log.debug("The result is empty");
+//            return ApiResponse.builder().build();
+//        }
+//
+//        List<PaymentScheduleDto> content = entities.stream()
+//                .map(entity -> mapper.map(entity, PaymentScheduleDto.class))
+//                .collect(Collectors.toList());
+//
+//        log.debug("The resulting number={} entities by dto={}", content.size(),
+//                gson.toJson(dto));
+//        return ApiResponse.builder()
+//                .content(content)
+//                .totalElements(content.size())
+//                .build();
+//    }
 
 }

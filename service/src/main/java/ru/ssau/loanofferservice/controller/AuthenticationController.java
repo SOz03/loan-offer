@@ -13,7 +13,7 @@ import ru.ssau.loanofferservice.dto.LoginDto;
 import ru.ssau.loanofferservice.dto.UserDto;
 import ru.ssau.loanofferservice.service.AuthenticationService;
 
-import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static org.springframework.http.MediaType.*;
 import static ru.ssau.loanofferservice.dto.enums.ApiPaths.*;
 
 @Slf4j

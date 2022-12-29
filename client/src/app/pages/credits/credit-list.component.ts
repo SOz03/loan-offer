@@ -1,8 +1,9 @@
 import {Component, ComponentFactoryResolver, OnInit, ViewChild} from '@angular/core';
 import {Credit} from '../../models';
 import {AuthService, CreditService} from '../../services';
-import {CreditFilter, ModalWindow} from "../index";
-import { RefDirecive } from './red.directive';
+import {CreditModalWindow} from "../index";
+import {RefDirective} from './ref.directive';
+
 @Component({
   selector: 'app-credit-list',
   templateUrl: './credit-list.component.html',
@@ -11,26 +12,27 @@ import { RefDirecive } from './red.directive';
 export class CreditListComponent implements OnInit {
   credits: Credit[] | undefined;
   searchText: string = '';
-  // creditFilter = new CreditFilter();
+  contentSize: number = 0;
+  showInfo = false;
+  messageInfo = ''
 
-  @ViewChild(RefDirecive, { static: false })
-  refDir!: RefDirecive;
+  contentIsEmpty = false;
 
-  constructor(private creditService: CreditService, private authService: AuthService, private resolver: ComponentFactoryResolver) {
+  @ViewChild(RefDirective, {static: false})
+  refDir!: RefDirective;
+
+  constructor(private creditService: CreditService,
+              private authService: AuthService,
+              private resolver: ComponentFactoryResolver) {
   }
 
   ngOnInit() {
     this.creditService.getAll().subscribe((data: Credit[]) => {
       this.credits = data;
       this.credits.forEach(el => el.show = true)
+      this.contentSize = data.length;
     });
   }
-
-  // filter(text: string){
-  //   if (this.credits != undefined){
-  //     return this.creditFilter.transform(this.credits, text);
-  //   }
-  // }
 
   get hasEditAccess(): boolean {
     return this.authService.hasEditAccess;
@@ -40,25 +42,42 @@ export class CreditListComponent implements OnInit {
     this.creditService.delete(id).subscribe((response) => {
       console.log(response);
       if (this.credits !== undefined) {
-        this.credits = this.credits.filter(s => {
-          return s.id != id;
+        this.credits = this.credits.filter(item => {
+          return item.id != id;
         });
       }
     });
+    this.contentSize--
+    this.messageInfo = 'Удаление успешно'
+    this.showInfo = true;
+    this.contentIsEmpty = (this.contentSize == 0)
+  }
+
+  closeInfo() {
+    this.messageInfo = ''
+    this.showInfo = false;
   }
 
   search(val: string) {
+    let size: number = 0
     this.credits?.forEach(el => {
-      el.show = el.limitation.toString().indexOf(val) == -1 ? el.show = false : true
+      if (el.limitation.toString().indexOf(val) == -1) {
+        el.show = false
+      } else {
+        size++
+        el.show = true
+      }
     })
+    this.contentSize = size;
+    this.contentIsEmpty = (size == 0)
   }
 
   edit(credit: Credit) {
-    const modalFactory = this.resolver.resolveComponentFactory(ModalWindow)
+    const modalFactory = this.resolver.resolveComponentFactory(CreditModalWindow)
     this.refDir.containerRef.clear()
 
     const component = this.refDir.containerRef.createComponent(modalFactory)
-    component.instance.header = 'Изменить кредит'
+    component.instance.header = 'Изменение записи'
     component.instance.credit = credit
     component.instance.close.subscribe(() => {
       this.refDir.containerRef.clear()
@@ -66,15 +85,17 @@ export class CreditListComponent implements OnInit {
   }
 
   addCredit() {
-    const modalFactory = this.resolver.resolveComponentFactory(ModalWindow)
+    const modalFactory = this.resolver.resolveComponentFactory(CreditModalWindow)
     this.refDir.containerRef.clear()
 
     const component = this.refDir.containerRef.createComponent(modalFactory)
-    component.instance.header = 'Добавить кредит'
-    component.instance.credit = new Credit
+    component.instance.header = 'Новая запись';
+    component.instance.credit = new Credit();
     component.instance.close.subscribe(() => {
+      this.credits?.push(component.instance.credit)
+      component.instance.credit = new Credit()
       this.refDir.containerRef.clear()
+      window.location.reload();
     })
   }
-
 }

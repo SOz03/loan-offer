@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Where;
 import ru.ssau.loanofferservice.common.dao.entity.BaseEntity;
 import ru.ssau.loanofferservice.dto.enums.Role;
 
@@ -18,6 +19,7 @@ import java.io.Serial;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@Where(clause = "deleted_by is null")
 @Table(name = "tr_users", schema = "data")
 public class User extends BaseEntity {
 

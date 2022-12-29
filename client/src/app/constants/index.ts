@@ -7,6 +7,8 @@ export const API_SERVICES = {
 
   bank: `${API_URL}/banks`,
   credit: `${API_URL}/credits`,
+  loanOffer: `${API_URL}/loan-offer`,
+  users: `${API_URL}/users`
 
 };
 

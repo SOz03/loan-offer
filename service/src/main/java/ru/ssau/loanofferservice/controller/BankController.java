@@ -1,12 +1,9 @@
 package ru.ssau.loanofferservice.controller;
 
-import com.google.gson.Gson;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.ResponseEntity;
-import org.springframework.lang.Nullable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +22,7 @@ import static ru.ssau.loanofferservice.dto.enums.ApiPaths.API_BANKS;
 @RequiredArgsConstructor
 @Tag(name = "Информация о банках")
 @RequestMapping(path = API_BANKS)
+@CrossOrigin
 @PreAuthorize("authentication.isAuthenticated()")
 public class BankController {
 
@@ -33,7 +31,7 @@ public class BankController {
     @GetMapping
     public ResponseEntity<?> select(Authentication authentication) {
         UserDetailsImpl principal = (UserDetailsImpl) authentication.getPrincipal();
-        log.info("Request for filter banks accepted");
+        log.info("Request for select banks accepted");
         List<BankDto> response = bankService.select(principal);
         return ResponseEntity.ok().body(response);
     }
@@ -62,14 +60,14 @@ public class BankController {
                 .body(content);
     }
 
-    @PutMapping
+    @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<?> update(UUID updatedEntityId, @RequestBody BankDto updateDto,
+    public ResponseEntity<?> update(@PathVariable UUID id, @RequestBody BankDto updateDto,
                                     Authentication authentication) {
         UserDetailsImpl principal = (UserDetailsImpl) authentication.getPrincipal();
         log.info("Request for update bank accepted");
 
-        ApiResponse content = bankService.update(updatedEntityId, updateDto, principal);
+        ApiResponse content = bankService.update(id, updateDto, principal);
 
         return ResponseEntity.ok()
                 .body(content);

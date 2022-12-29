@@ -4,7 +4,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.ssau.loanofferservice.common.service.AbstractServiceDao;
 import ru.ssau.loanofferservice.dto.LoanOfferDto;
-import ru.ssau.loanofferservice.jpa.entity.*;
+import ru.ssau.loanofferservice.jpa.entity.Bank;
+import ru.ssau.loanofferservice.jpa.entity.Credit;
+import ru.ssau.loanofferservice.jpa.entity.LoanOffer;
+import ru.ssau.loanofferservice.jpa.entity.User;
 import ru.ssau.loanofferservice.jpa.repository.LoanOfferRepository;
 import ru.ssau.loanofferservice.security.config.principal.UserDetailsImpl;
 
@@ -20,6 +23,22 @@ public class LoanOfferDaoService extends AbstractServiceDao<LoanOffer, LoanOffer
 
     public LoanOfferDaoService(LoanOfferRepository repository) {
         super(repository);
+    }
+
+    public List<LoanOffer> findAllByBank(Bank bank){
+        return repository.findAllByBank(bank);
+    }
+
+    public List<LoanOffer> findAllByCredit(Credit credit){
+        return repository.findAllByCredit(credit);
+    }
+
+    public List<LoanOffer> findAllByBankAndUser(Bank bank, User user) {
+        return repository.findAllByBankAndUser(bank, user);
+    }
+
+    public LoanOffer getLoanOffer(Bank bank, User user, Credit credit) {
+        return repository.findLoanOfferByBankAndUserAndCredit(bank, user, credit);
     }
 
     public LoanOffer findByLoanOfferDto(LoanOfferDto dto, UserDetailsImpl principal) {

@@ -1,17 +1,8 @@
-/*@import url('https://fonts.googleapis.com/css?family=Lato:100&display=swap');*/
-
 .modal{
   padding: 50px;
 
 }
 
-/*BODY {*/
-/*  display: flex;*/
-/*  align-items: center;*/
-/*  justify-content: center;*/
-/*  background: white;*/
-/*  font-family: Georgia;*/
-/*}*/
 H3 {
   font-size: 50px;
   font-weight: normal;
@@ -122,4 +113,14 @@ button-log:hover::after, button-log:focus::after {
     height: 300px;
     opacity: 0;
   }
+}
+
+.content__close {
+  width: 11px;
+  height: 26px;
+  position: absolute;
+  right: 20px;
+  top: 14px;
+  z-index: 1;
+  cursor: pointer;
 }

@@ -14,13 +14,19 @@
   </parent>
 
   <build>
+    <resources>
+      <resource>
+        <directory>./dist/client</directory>
+        <targetPath>static</targetPath>
+      </resource>
+    </resources>
     <plugins>
       <plugin>
         <groupId>com.github.eirslett</groupId>
         <artifactId>frontend-maven-plugin</artifactId>
         <version>1.3</version>
         <configuration>
-          <nodeVersion>v13.14.0</nodeVersion>
+          <nodeVersion>v15.0.0</nodeVersion>
           <npmVersion>6.13.4</npmVersion>
           <workingDirectory>src/</workingDirectory>
         </configuration>
@@ -36,9 +42,6 @@
             <goals>
               <goal>npm</goal>
             </goals>
-            <configuration>
-              <arguments>install</arguments>
-            </configuration>
           </execution>
           <execution>
             <id>npm run build</id>
@@ -48,16 +51,6 @@
             <configuration>
               <arguments>run build</arguments>
             </configuration>
-          </execution>
-          <execution>
-            <id>prod</id>
-            <goals>
-              <goal>npm</goal>
-            </goals>
-            <configuration>
-              <arguments>run-script build</arguments>
-            </configuration>
-            <phase>generate-resources</phase>
           </execution>
         </executions>
       </plugin>

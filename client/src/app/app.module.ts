@@ -1,22 +1,20 @@
 import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
-
 import {AppComponent} from './app.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {AppRoutingModule} from './app-routing.module';
 import {HttpClientModule} from '@angular/common/http';
 import {
-  BankFormPage,
   BankListPage,
-  CreditFilter,
-  ModalWindow,
+  CreditModalWindow,
   CreditListPage,
   HomePage,
   LoginPage,
   ProfilePage,
   RegistrationPage,
+  LoanOfferPage
 } from './pages';
-import { RefDirecive } from './pages/credits/ref.directive';
+import { RefDirective } from './pages/credits/ref.directive';
 
 @NgModule({
   imports: [
@@ -31,13 +29,12 @@ import { RefDirecive } from './pages/credits/ref.directive';
     RegistrationPage,
     LoginPage,
     ProfilePage,
-    BankFormPage,
     BankListPage,
     CreditListPage,
-    CreditFilter,
-    ModalWindow,
+    CreditModalWindow,
     HomePage,
-    RefDirecive,
+    LoanOfferPage,
+    RefDirective
   ],
   bootstrap: [AppComponent],
 })

@@ -1,5 +1,6 @@
 package ru.ssau.loanofferservice.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 import java.io.Serial;
@@ -19,10 +20,13 @@ public class LoanOfferDto implements Serializable {
     private static final long serialVersionUID = -1751253774965805138L;
 
     private UUID id;
-    private BigDecimal loanAmount;
-    private UserDto userId;
+    private UserDto user;
     private CreditDto credit;
     private BankDto bank;
 
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private BigDecimal loanAmount;
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private List<PaymentScheduleDto> paymentSchedules;
 }

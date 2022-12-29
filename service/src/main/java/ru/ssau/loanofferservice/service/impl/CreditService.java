@@ -11,7 +11,9 @@ import ru.ssau.loanofferservice.dto.CreditDto;
 import ru.ssau.loanofferservice.dto.response.ApiResponse;
 import ru.ssau.loanofferservice.dto.response.Errors;
 import ru.ssau.loanofferservice.jpa.dao.CreditDaoService;
+import ru.ssau.loanofferservice.jpa.dao.LoanOfferDaoService;
 import ru.ssau.loanofferservice.jpa.entity.Credit;
+import ru.ssau.loanofferservice.jpa.entity.LoanOffer;
 import ru.ssau.loanofferservice.security.config.principal.UserDetailsImpl;
 
 import java.time.Clock;
@@ -29,12 +31,15 @@ public class CreditService implements ApiService<CreditDto> {
     private final ModelMapper mapper;
     private final CreditDaoService daoService;
 
+    private final LoanOfferService loanOfferService;
+    private final LoanOfferDaoService loanOfferDaoService;
+
     @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
     public List<CreditDto> select(UserDetailsImpl principal) {
         List<Credit> credits = (List<Credit>) daoService.findAll();
 
         if (credits.isEmpty()) {
-            log.info("The result is empty");
+            log.warn("The result is empty");
             return new ArrayList<>();
         }
 
@@ -42,7 +47,7 @@ public class CreditService implements ApiService<CreditDto> {
                 .map(entity -> mapper.map(entity, CreditDto.class))
                 .toList();
 
-        log.info("Select result = {}", gson.toJson(result));
+        log.debug("Select result = {}", gson.toJson(result));
         return result;
     }
 
@@ -110,10 +115,15 @@ public class CreditService implements ApiService<CreditDto> {
         if (entity == null) {
             log.warn("Entity with id={} not found", uuid.toString());
         } else {
+            List<LoanOffer> loanOfferList = loanOfferDaoService.findAllByCredit(entity);
+            if (!loanOfferList.isEmpty()) {
+                loanOfferList.forEach(loanOffer -> loanOfferService.delete(loanOffer.getId(), userId));
+            }
+
             entity.setDeletedBy(userId);
             daoService.save(entity);
 
-            log.info("Deleted is completed by id {}, deleted by user {}", uuid, userId);
+            log.debug("Deleted is completed by id {}, deleted by user {}", uuid, userId);
         }
     }
 }

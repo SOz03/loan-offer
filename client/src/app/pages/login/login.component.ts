@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService, StorageService } from 'src/app/services';
@@ -11,6 +11,7 @@ import { AuthService, StorageService } from 'src/app/services';
 export class LoginComponent implements OnInit {
   form: FormGroup;
   isLoginFailed = false;
+  showAlert = false;
   errorMessage = '';
 
   constructor(
@@ -33,6 +34,10 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {}
 
+  closeAlert() {
+    this.showAlert = false;
+  }
+
   onSubmit(event: Event): void {
     event.preventDefault();
 
@@ -43,11 +48,9 @@ export class LoginComponent implements OnInit {
     this.authService.login({ username, password }).subscribe({
       next: (data) => {
         if (
-          data.statusCode === 'OK' /*&&
-          data.body.content &&
-          data.body.content[0]*/
+          data.statusCode === 'OK'
         ) {
-          const user = data.body/*.content[0]*/;
+          const user = data.body;
 
           this.storageService.saveToken(user.token);
           this.storageService.saveUser(user);
@@ -60,6 +63,7 @@ export class LoginComponent implements OnInit {
       },
       error: (err) => {
         this.errorMessage = err.message || '';
+        this.showAlert = true;
         this.isLoginFailed = true;
       },
     });

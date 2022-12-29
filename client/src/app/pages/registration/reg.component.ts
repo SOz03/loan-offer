@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { AuthService } from 'src/app/services';
+import {Component, OnInit} from '@angular/core';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {AuthService} from 'src/app/services';
 
 @Component({
   selector: 'app-register',
@@ -15,27 +15,36 @@ export class RegComponent implements OnInit {
 
   constructor(private authService: AuthService) {
     this.form = new FormGroup({
-      login: new FormControl('', [
+      username: new FormControl('', [
         Validators.required,
         Validators.minLength(5),
         Validators.maxLength(20),
       ]),
-      email: new FormControl('', [Validators.required, Validators.email]),
+      email: new FormControl('', [
+        Validators.required,
+        Validators.email
+      ]),
       password: new FormControl('', [
         Validators.required,
         Validators.minLength(6),
       ]),
+      fullname: new FormControl('', []),
+      phone: new FormControl('', []),
+      city: new FormControl('', [])
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  }
 
   onSubmit(event: Event): void {
     event.preventDefault();
 
-    const { username, email, password } = this.form.value;
+    console.log(this.form.value)
 
-    this.authService.register({ username, email, password }).subscribe({
+    const {username, email, password, fullname, phone, city} = this.form.value;
+
+    this.authService.register({username, email, password, fullname, phone, city}).subscribe({
       complete: () => {
         this.isSuccessful = true;
         this.isSignUpFailed = false;

@@ -31,7 +31,7 @@ public class LoanOffer extends BaseEntity {
     @JoinColumn(name = "bank_id")
     private Bank bank;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "id")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "id", cascade = CascadeType.ALL)
     private List<PaymentSchedule> paymentSchedules;
 
 }

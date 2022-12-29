@@ -17,9 +17,11 @@ import ru.ssau.loanofferservice.dto.response.ApiResponse;
 import ru.ssau.loanofferservice.dto.response.Errors;
 import ru.ssau.loanofferservice.jpa.dao.BankDaoService;
 import ru.ssau.loanofferservice.jpa.dao.CreditDaoService;
+import ru.ssau.loanofferservice.jpa.dao.LoanOfferDaoService;
 import ru.ssau.loanofferservice.jpa.dao.UserDaoService;
 import ru.ssau.loanofferservice.jpa.entity.Bank;
 import ru.ssau.loanofferservice.jpa.entity.Credit;
+import ru.ssau.loanofferservice.jpa.entity.LoanOffer;
 import ru.ssau.loanofferservice.jpa.entity.User;
 import ru.ssau.loanofferservice.security.config.principal.UserDetailsImpl;
 
@@ -40,6 +42,8 @@ public class BankService implements ApiService<BankDto> {
     private final BankDaoService bankDaoService;
     private final UserDaoService userDaoService;
     private final CreditDaoService creditDaoService;
+    private final LoanOfferService loanOfferService;
+    private final LoanOfferDaoService loanOfferDaoService;
 
     private BankService self;
 
@@ -49,11 +53,11 @@ public class BankService implements ApiService<BankDto> {
     }
 
     public List<BankDto> filter(String name, UserDetailsImpl principal) {
-        log.info("Search for all bank entities by name={}", name);
+        log.debug("Search for all bank entities by name={}", name);
         List<Bank> entities = bankDaoService.getAllByName(name);
 
         if (entities.isEmpty()) {
-            log.info("The result is empty");
+            log.debug("The result is empty");
             return new ArrayList<>();
         }
 
@@ -69,7 +73,7 @@ public class BankService implements ApiService<BankDto> {
 
     @Override
     public List<BankDto> select(UserDetailsImpl principal) {
-        log.info("Search for all bank entities");
+        log.debug("Search for all bank entities");
         List<Bank> entities = (List<Bank>) bankDaoService.findAll();
 
         entities = zeroUsersForTheUserRole(entities, principal);
@@ -78,14 +82,14 @@ public class BankService implements ApiService<BankDto> {
                 .map(entity -> mapper.map(entity, BankDto.class))
                 .collect(Collectors.toList());
 
-        log.info("Converted entities to dto, the result is {}", gson.toJson(content));
+        log.debug("Converted entities to dto, the result is {}", gson.toJson(content));
         return content;
     }
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, readOnly = true)
     public ApiResponse get(UUID uuid) {
-        log.info("Entity search by id={}", uuid.toString());
+        log.debug("Entity search by id={}", uuid.toString());
         Bank entity = bankDaoService.findById(uuid);
         if (entity == null) {
             return ApiResponse.builder().build();
@@ -96,7 +100,7 @@ public class BankService implements ApiService<BankDto> {
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
     public ApiResponse create(BankDto bankDto, UserDetailsImpl principal) {
-        log.info("Create new entity={}", gson.toJson(bankDto));
+        log.debug("Create new entity={}", gson.toJson(bankDto));
 
         if (bankDto != null) {
             if (StringUtils.isBlank(bankDto.getBankName())) {
@@ -107,16 +111,13 @@ public class BankService implements ApiService<BankDto> {
             List<Credit> credits = self.findCredits(bankDto);
             bank.setCredits(credits);
 
-            List<User> users = self.findUsers(bankDto);
-            bank.setUsers(users);
-
             bank = bankDaoService.save(bank);
             bankDto = mapper.map(bank, BankDto.class);
 
-            log.info("Saving entity={} is completed", gson.toJson(bankDto));
+            log.debug("Saving entity={} is completed", gson.toJson(bankDto));
             return singleResponse(bankDto);
         }
-        log.info("Dto is empty");
+        log.debug("Dto is empty");
         return errorResponse(Errors.BANK_IS_EMPTY.name());
     }
 
@@ -125,18 +126,15 @@ public class BankService implements ApiService<BankDto> {
     public ApiResponse update(UUID id, BankDto dto, UserDetailsImpl principal) {
         log.debug("Update entity with id={} and dto={}", id.toString(), gson.toJson(dto));
         if (dto == null) {
-            log.info("Param is empty");
+            log.warn("Param is empty");
             return errorResponse(Errors.BANK_IS_EMPTY.name());
         }
 
         Bank bank = bankDaoService.findById(id);
         if (bank == null) {
-            log.info("Entity with id={} not found", id);
+            log.warn("Entity with id={} not found", id);
             return errorResponse(Errors.BANK_IS_EMPTY.name());
         }
-
-        List<User> users = self.findUsers(dto);
-        bank.setUsers(users);
 
         List<Credit> credits = self.findCredits(dto);
         bank.setCredits(credits);
@@ -144,7 +142,7 @@ public class BankService implements ApiService<BankDto> {
         bank.setBankName(dto.getBankName());
         bank.setUpdatedAt(ZonedDateTime.now(Clock.systemUTC()).toInstant().toEpochMilli());
         bank = bankDaoService.save(bank);
-        log.info("Saving completed {}", gson.toJson(dto));
+        log.debug("Saving completed {}", gson.toJson(dto));
 
         return singleResponse(mapper.map(bank, BankDto.class));
     }
@@ -154,12 +152,19 @@ public class BankService implements ApiService<BankDto> {
     public void delete(UUID id, UUID userId) {
         Bank bank = bankDaoService.findById(id);
         if (bank == null) {
-            log.info("Entity with id={} not found", id.toString());
+            log.warn("Entity with id={} not found", id.toString());
         } else {
+            List<LoanOffer> loanOfferList = loanOfferDaoService.findAllByBank(bank);
+            if (!loanOfferList.isEmpty()) {
+                loanOfferList.forEach(loanOffer -> {
+                    loanOfferService.delete(loanOffer.getId(), userId);
+                });
+            }
+
             bank.setDeletedBy(userId);
             bankDaoService.save(bank);
 
-            log.info("Deleted is completed by id {}", id);
+            log.debug("Deleted is completed by id {}", id);
         }
     }
 
@@ -173,7 +178,7 @@ public class BankService implements ApiService<BankDto> {
                     credits.add(credit);
                 } else {
                     // TRACE
-                    log.info("Credit not found dto={}", gson.toJson(creditDto));
+                    log.warn("Credit not found dto={}", gson.toJson(creditDto));
                 }
             }
         }
@@ -190,7 +195,7 @@ public class BankService implements ApiService<BankDto> {
                     users.add(user);
                 } else {
                     // TRACE
-                    log.info("User not found dto={}", gson.toJson(userDto));
+                    log.warn("User not found dto={}", gson.toJson(userDto));
                 }
             }
         }

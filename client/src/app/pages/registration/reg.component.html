@@ -1,102 +1,111 @@
-<!--<div class="container">-->
-<!--  <h1>Register</h1>-->
-<!--  <p>Please fill in this form to create an account.</p>-->
-<!--  <hr>-->
-
-<!--  <label for="email"><b>Email</b></label>-->
-<!--  <input type="text" placeholder="Enter Email" name="email" required>-->
-
-<!--  <label for="psw"><b>Password</b></label>-->
-<!--  <input type="password" placeholder="Enter Password" name="psw" required>-->
-
-<!--  <label for="psw-repeat"><b>Repeat Password</b></label>-->
-<!--  <input type="password" placeholder="Repeat Password" name="psw-repeat" required>-->
-<!--  <hr>-->
-
-<!--  <button type="submit" class="registerbtn">Register</button>-->
-<!--</div>-->
-
-<!--<div class="container signin">-->
-<!--  <p>Already have an account? <a href="#">Sign in</a>.</p>-->
-<!--</div>-->
-<div class="enregistrer active-section">
-  <div class="contact-form">
-    <label>USERNAME</label>
-    <input placeholder="" type="text">
-
-    <label>E-MAIL</label>
-    <input placeholder="" type="text">
-
-    <label>PASSWORD</label>
-    <input placeholder="" type="text">
-
-    <label>CONFIRM PASSWORD</label>
-    <input placeholder="" type="text">
-
-    <div class="check">
-      <label>
-        <input id="check" type="checkbox" class="checkbox">
-        <svg xmlns="http://www.w3.org/2000/svg" width="26px" height="23px">
-          <path class="path-back"  d="M1.5,6.021V2.451C1.5,2.009,1.646,1.5,2.3,1.5h18.4c0.442,0,0.8,0.358,0.8,0.801v18.398c0,0.442-0.357,0.801-0.8,0.801H2.3c-0.442,0-0.8-0.358-0.8-0.801V6"/>
-          <path class="path-moving" d="M24.192,3.813L11.818,16.188L1.5,6.021V2.451C1.5,2.009,1.646,1.5,2.3,1.5h18.4c0.442,0,0.8,0.358,0.8,0.801v18.398c0,0.442-0.357,0.801-0.8,0.801H2.3c-0.442,0-0.8-0.358-0.8-0.801V6"/>
-        </svg>
-      </label>
-      <h3>I agree</h3>
-    </div>
-
-    <input class="submit" value="SIGN UP" type="submit">
-
-  </div>
+<div class="h1 mb-4">
 </div>
 
-<!--<div class="col-md-12">-->
-<!--  <div class="card card-container">-->
-<!--    <img id="profile-img" src="//ssl.gstatic.com/accounts/ui/avatar_2x.png" class="profile-img-card" />-->
-<!--    <form name="form" (ngSubmit)="onSubmit($event)" [formGroup]="form" novalidate autocomplete="off">-->
-<!--      <div class="form-group">-->
-<!--        <label for="username">Login</label>-->
-<!--        <input type="text" class="form-control" name="username" formControlName="username" required minlength="5"-->
-<!--          maxlength="20" />-->
-<!--        <div class="alert-danger" *ngIf="form.get('username')?.dirty && form.get('username')?.invalid">-->
-<!--          <div *ngIf="form.get('username')?.errors?.['required']">Login is required</div>-->
-<!--          <div *ngIf="form.get('login')?.errors?.['minlength']">-->
-<!--            Login must be at least 5 characters-->
-<!--          </div>-->
-<!--          <div *ngIf="form.get('username')?.errors?.['maxlength']">-->
-<!--            Login must be at most 20 characters-->
-<!--          </div>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--      <div class="form-group">-->
-<!--        <label for="email">Email</label>-->
-<!--        <input type="email" class="form-control" name="email" formControlName="email" required email />-->
-<!--        <div class="alert-danger" *ngIf="form.get('email')?.dirty && form.get('email')?.invalid">-->
-<!--          <div *ngIf="form.get('email')?.errors?.['required']">Email is required</div>-->
-<!--          <div *ngIf="form.get('email')?.errors?.['email']">-->
-<!--            Email must be a valid email address-->
-<!--          </div>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--      <div class="form-group">-->
-<!--        <label for="password">Password</label>-->
-<!--        <input type="password" class="form-control" name="password" formControlName="password" required minlength="6" />-->
-<!--        <div class="alert-danger" *ngIf="form.get('password')?.dirty && form.get('password')?.invalid">-->
-<!--          <div *ngIf="form.get('password')?.errors?.['required']">Password is required</div>-->
-<!--          <div *ngIf="form.get('password')?.errors?.['minlength']">-->
-<!--            Password must be at least 6 characters-->
-<!--          </div>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--      <div class="form-group">-->
-<!--        <button class="btn btn-primary btn-block">Register</button>-->
-<!--      </div>-->
-<!--      <div class="alert alert-warning" *ngIf="isSignUpFailed">-->
-<!--        Registration failed!<br />{{ errorMessage }}-->
-<!--      </div>-->
-<!--    </form>-->
+<div class="alert alert-success mb-4" *ngIf="isSuccessful">
+  Регистрация прошла успешно!
+</div>
 
-<!--    <div class="alert alert-success" *ngIf="isSuccessful">-->
-<!--      Successfully registered!-->
-<!--    </div>-->
-<!--  </div>-->
-<!--</div>-->
+<div class="mb-4 shadow">
+  <div class="card card-container card-body border-start border-dark border-2" style="alignment: center">
+    <div class="text-center">
+      <label class="h2" style="text-align:center;vertical-align: middle;min-width: 220px">Регистрация нового
+        пользователя</label>
+    </div>
+    <form name="form" (ngSubmit)="onSubmit($event)" [formGroup]="form" novalidate autocomplete="off">
+      <div class="form-group row g-2 card-body">
+        <div class="col-auto">
+          <label class="h4" style="text-align:right;vertical-align: middle;min-width: 220px">Имя пользователя<span
+            class="text-danger">*</span></label>
+        </div>
+        <div class="col-auto">
+          <input style="width: 500px" type="text" class="form-control" name="username"
+                 formControlName="username"
+                 required minlength="5"
+                 maxlength="20"/>
+          <div class="alert-danger" *ngIf="form.get('username')?.dirty && form.get('username')?.invalid">
+            <div class="text-danger" *ngIf="form.get('username')?.errors?.['required']">Обязательно для заполнения</div>
+            <div class="text-danger" *ngIf="form.get('login')?.errors?.['minlength']">
+              Минимальная длина 5 символов
+            </div>
+            <div class="text-danger" *ngIf="form.get('username')?.errors?.['maxlength']">
+              Максимальная длина 20 символов
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row g-2 card-body">
+        <div class="col-auto">
+          <label class="h4" style="text-align:right;vertical-align: middle;min-width: 220px">Почта<span
+            class="text-danger">*</span></label>
+        </div>
+        <div class="col-auto">
+          <input style="width: 500px" type="email" class="form-control" name="email"
+                 formControlName="email" required email/>
+          <div class="alert-danger" *ngIf="form.get('email')?.dirty && form.get('email')?.invalid">
+            <div class="text-danger" *ngIf="form.get('email')?.errors?.['required']">"Почта обязательна для
+              заполнения"
+            </div>
+            <div class="text-danger" *ngIf="form.get('email')?.errors?.['email']">Почта должна быть действительным
+              адресом
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row g-2 card-body">
+        <div class="col-auto">
+          <label class="h4" style="text-align:right;vertical-align: middle;min-width: 220px">Пароль<span
+            class="text-danger">*</span></label>
+        </div>
+        <div class="col-auto">
+          <input style="width: 500px" type="password" class="form-control" name="password"
+                 formControlName="password"
+                 required minlength="6"/>
+          <div class="alert-danger" *ngIf="form.get('password')?.dirty && form.get('password')?.invalid">
+            <div class="text-danger" *ngIf="form.get('password')?.errors?.['required']">Пароль обязателен для
+              заполнения
+            </div>
+            <div class="text-danger" *ngIf="form.get('password')?.errors?.['minlength']">Пароль должен состоять не менее
+              чем из 6 символов
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row g-2 card-body">
+        <div class="col-auto">
+          <label class="h4" style="text-align:right;vertical-align: middle;min-width: 220px">ФИО</label>
+        </div>
+        <div class="col-auto">
+          <input style="width: 500px" type="fullname" class="form-control" name="fullname"
+                 formControlName="fullname"/>
+        </div>
+      </div>
+      <div class="form-group row g-2 card-body">
+        <div class="col-auto">
+          <label class="h4" style="text-align:right;vertical-align: middle;min-width: 220px">Номер телефона</label>
+        </div>
+        <div class="col-auto">
+          <input style="width: 500px" type="phone" class="form-control" name="phone"
+                 formControlName="phone"/>
+        </div>
+      </div>
+      <div class="form-group row g-2 card-body">
+        <div class="col-auto">
+          <label class="h4" style="text-align:right;vertical-align: middle;min-width: 220px">Город</label>
+        </div>
+        <div class="col-auto">
+          <input style="width: 500px" type="city" class="form-control" name="city"
+                 formControlName="city"/>
+        </div>
+      </div>
+
+      <div class="form-group text-center">
+        <button class="btn btn-dark" style="width: 600px">
+          <span class="h3">Зарегистрироваться</span>
+        </button>
+      </div>
+      <div class="alert alert-warning" *ngIf="isSignUpFailed">
+        Ошибка при регистрации!<br/>{{ errorMessage }}
+      </div>
+    </form>
+  </div>
+</div>

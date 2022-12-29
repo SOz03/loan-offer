@@ -1,14 +1,13 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { AppComponent } from './app.component';
 import { AuthGuard, HomeGuard } from './guards';
 import {
   LoginPage,
   RegistrationPage,
-  BankFormPage,
   BankListPage,
   ProfilePage,
   CreditListPage,
+  LoanOfferPage,
   HomePage
 } from './pages';
 
@@ -19,14 +18,9 @@ const appRoutes: Routes = [
     canActivate: [HomeGuard],
   },
   {
-    path: 'register',
+    path: 'registration',
     component: RegistrationPage,
     canActivate: [HomeGuard],
-  },
-  {
-    path: 'banks/create',
-    component: BankFormPage,
-    canActivate: [AuthGuard],
   },
   {
     path: 'banks',
@@ -36,6 +30,11 @@ const appRoutes: Routes = [
   {
     path: 'credits',
     component: CreditListPage,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'loan-offer',
+    component: LoanOfferPage,
     canActivate: [AuthGuard],
   },
   {

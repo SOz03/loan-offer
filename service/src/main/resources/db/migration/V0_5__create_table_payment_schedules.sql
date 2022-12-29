@@ -7,9 +7,9 @@ create table data.tr_payment_schedules
     updated_at    bigint,
     deleted_by    uuid  default null,
     date_payment  date        not null,
-    amount        numeric(7, 4) not null,
-    body          numeric(7, 4) not null,
-    interest      numeric(7, 4) not null,
+    amount        numeric(10, 2) not null,
+    body          numeric(10, 2) not null,
+    interest      numeric(10, 2) not null,
     loan_offer_id uuid          not null
 );
 

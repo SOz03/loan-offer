@@ -40,7 +40,7 @@ public class CreditController {
         return ResponseEntity.ok().body(creditService.get(id));
     }
 
-    @PostMapping
+    @PostMapping()
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<?> create(@RequestBody CreditDto dto, Authentication authentication) {
         UserDetailsImpl principal = (UserDetailsImpl) authentication.getPrincipal();
@@ -48,9 +48,9 @@ public class CreditController {
         return ResponseEntity.ok().body(creditService.create(dto, principal));
     }
 
-    @PutMapping
+    @PutMapping("/{updatedEntityId}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<?> update(UUID updatedEntityId, @RequestBody CreditDto updateDto,
+    public ResponseEntity<?> update(@PathVariable UUID updatedEntityId, @RequestBody CreditDto updateDto,
                                     Authentication authentication) {
         UserDetailsImpl principal = (UserDetailsImpl) authentication.getPrincipal();
         log.info("Request for update credit accepted");

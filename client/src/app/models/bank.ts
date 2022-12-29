@@ -1,3 +1,12 @@
+import {Credit} from "./credit";
+import {User} from "./user";
+
 export class Bank {
-  name: string = '';
+
+  id: string = '';
+  bankName: string = '';
+  credits: Credit[] = [];
+  users: User[] = [];
+  show: boolean = true;
+
 }
