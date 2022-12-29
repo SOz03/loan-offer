@@ -1,6 +1,5 @@
 package ru.ssau.loanofferservice.controller;
 
-import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +19,6 @@ import static ru.ssau.loanofferservice.dto.enums.ApiPaths.API_BANKS;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@Tag(name = "Информация о банках")
 @RequestMapping(path = API_BANKS)
 @CrossOrigin
 @PreAuthorize("authentication.isAuthenticated()")

@@ -20,7 +20,6 @@ import static ru.ssau.loanofferservice.dto.enums.ApiPaths.*;
 @RestController
 @RequestMapping(path = API_AUTHENTICATION)
 @RequiredArgsConstructor
-@Tag(name = "Авторизация пользователя")
 public class AuthenticationController {
 
     private final Gson gson;

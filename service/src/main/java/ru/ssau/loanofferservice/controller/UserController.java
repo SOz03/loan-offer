@@ -19,7 +19,6 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@Tag(name = "Информация о кредитных предложениях")
 @RequestMapping(path = "/users")
 @CrossOrigin
 @PreAuthorize("authentication.isAuthenticated()")
